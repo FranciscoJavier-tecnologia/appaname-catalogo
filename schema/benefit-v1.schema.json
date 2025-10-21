@@ -1,0 +1,77 @@
+{
+  "": "http://json-schema.org/draft-07/schema#",
+  "title": "BenefitNormalizado-v1.0",
+  "description": "El 'Contrato de Datos' (plano) que define un beneficio curado para Appañame.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "benefit_uid": { "type": "string" },
+      "issuer_id": { "type": "string" },
+      "title": { "type": "string" },
+      "description_short": { "type": "string" },
+      "description_rules": { "type": "string" },
+      "discount": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["PERCENTAGE", "FIXED_AMOUNT", "2x1", "POINTS"] },
+          "value": { "type": "number" },
+          "currency": { "type": "string" }
+        },
+        "required": ["type", "value"]
+      },
+      "validity": {
+        "type": "object",
+        "properties": {
+          "from": { "type": "string", "format": "date-time" },
+          "to": { "type": "string", "format": "date-time" },
+          "recurring_rule": { "type": "string" }
+        },
+        "required": ["from", "to"]
+      },
+      "redemption": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["ONLINE_COUPON", "IN_STORE_PAYMENT", "SHOW_APP_QR"] },
+          "code": { "type": ["string", "null"] }
+        },
+        "required": ["type"]
+      },
+      "geo_scope": {
+        "type": "string",
+        "enum": ["NATIONAL", "REGIONAL", "ONLINE_ONLY", "SPECIFIC_STORES"]
+      },
+      "locations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "store_name": { "type": "string" },
+            "address": { "type": "string" },
+            "lat": { "type": "number" },
+            "lon": { "type": "number" }
+          },
+          "required": ["address", "lat", "lon"]
+        }
+      },
+      "provenance": {
+        "type": "object",
+        "properties": {
+          "source_url": { "type": "string" },
+          "last_verified_at": { "type": "string", "format": "date-time" },
+          "parser_strategy_used": { "type": "string" }
+        },
+        "required": ["source_url", "last_verified_at"]
+      }
+    },
+    "required": [
+      "benefit_uid",
+      "issuer_id",
+      "title",
+      "discount",
+      "validity",
+      "geo_scope",
+      "provenance"
+    ]
+  }
+}
